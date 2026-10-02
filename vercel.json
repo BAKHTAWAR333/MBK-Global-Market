@@ -1,0 +1,6 @@
+{
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [{ "source": "/((?!assets/|robots\\.txt|favicon\\.ico).*)", "destination": "/index.html" }]
+}

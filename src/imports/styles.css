@@ -1,0 +1,312 @@
+:root{
+  --red:#E30613; --ink:#0a0a0a; --mut:#6b7280; --line:#e7e7e7; --bg:#fafafa;
+  --card:#ffffff; --up:#16a34a; --down:#E30613;
+  --font:'Inter',-apple-system,'Segoe UI',Roboto,sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+/* A statically-hidden element must never render, no matter what a
+ * component's display rule says (regression: .mkt-err{display:flex}
+ * used to override the hidden attribute and show a phantom error card). */
+[hidden]{display:none!important}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted);color:var(--mut)}
+a{color:var(--red);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50}
+.brand{display:flex;align-items:center;gap:10px}
+.sq{width:16px;height:16px;background:var(--red);display:inline-block}
+.sq.sm{width:11px;height:11px}
+.word{font-weight:800;letter-spacing:.12em;font-size:15px}
+.prod{font-size:11px;font-weight:700;letter-spacing:.28em;color:var(--mut);border-left:1px solid var(--line);padding-left:10px}
+.live-line{display:inline-flex;align-items:center;gap:7px;font-size:11px;font-weight:800;letter-spacing:.16em;color:var(--red)}
+
+.wrap{max-width:1180px;margin:0 auto;padding:22px 18px 40px;display:flex;flex-direction:column;gap:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px}
+
+.toolbar{display:flex;flex-direction:column;gap:14px}
+.searchbox{position:relative;max-width:520px}
+.searchbox .sic{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:17px;height:17px;color:var(--mut);pointer-events:none}
+.searchbox input{width:100%;padding:12px 14px 12px 42px;font-size:15px;font-family:var(--font);border:1px solid var(--line);border-radius:8px;outline:none;background:#fff}
+.searchbox input:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(227,6,19,.08)}
+.results{position:absolute;top:calc(100% + 6px);left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 12px 32px rgba(0,0,0,.12);overflow:hidden;z-index:40}
+.results button{display:flex;justify-content:space-between;gap:10px;width:100%;padding:10px 14px;background:none;border:0;border-bottom:1px solid #f1f1f1;cursor:pointer;font-family:var(--font);font-size:14px;text-align:left}
+.results button:last-child{border-bottom:0}
+.results button:hover{background:#fafafa}
+.results button b{font-weight:700}
+.results button span{color:var(--mut);font-size:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip-group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.chip-label{font-size:10px;font-weight:700;letter-spacing:.18em;color:var(--mut);margin-right:2px}
+.chip{padding:7px 13px;border:1px solid var(--line);background:#fff;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font)}
+.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.chart-head{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.symline{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.symline h1{font-size:22px;font-weight:800;letter-spacing:-.01em}
+.sym{font-family:var(--mono);font-size:12px;font-weight:600;background:#f3f4f6;padding:4px 9px;border-radius:6px;color:#374151}
+.src{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--mut);border:1px solid var(--line);padding:4px 9px;border-radius:6px;text-transform:uppercase}
+.priceline{display:flex;align-items:baseline;gap:12px;margin-top:8px}
+.price{font-size:32px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.chg{font-size:14px;font-weight:700;padding:4px 10px;border-radius:6px;font-variant-numeric:tabular-nums}
+.chg.pos{color:var(--up);background:rgba(22,163,74,.1)}
+.chg.neg{color:var(--down);background:rgba(227,6,19,.08)}
+.fallback-note{margin-top:8px;font-size:12px;color:#92600a;background:#fef6e0;border:1px solid #f3e2a9;padding:6px 10px;border-radius:6px;display:inline-block}
+.chart-controls{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.tf{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.tf button{padding:8px 12px;background:#fff;border:0;border-right:1px solid var(--line);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;color:var(--mut)}
+.tf button:last-child{border-right:0}
+.tf button.on{background:var(--ink);color:#fff}
+.ctype{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.ctype button{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;background:#fff;border:0;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;color:var(--mut)}
+.ctype button svg{width:15px;height:15px}
+.ctype button.on{background:var(--red);color:#fff}
+
+.chart-wrap{position:relative;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+#chart{width:100%;height:460px}
+.chart-msg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.92);font-size:14px;color:var(--mut);text-align:center;padding:20px}
+
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:12px}
+.stat{background:#fff;padding:12px 14px}
+.stat .k{font-size:10px;font-weight:700;letter-spacing:.16em;color:var(--mut);text-transform:uppercase;margin-bottom:5px}
+.stat .v{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums}
+
+.m-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+
+.api-card .muted{font-size:13px;margin-bottom:10px}
+.endpoints{list-style:none;display:flex;flex-direction:column;gap:8px}
+.endpoints li{display:flex;flex-direction:column;gap:3px;padding:10px 12px;background:#fafafa;border:1px solid var(--line);border-radius:8px;font-size:12px}
+.endpoints li .mono{font-size:12px;color:var(--ink);word-break:break-all}
+.endpoints li span:last-child{color:var(--mut)}
+
+footer{border-top:1px solid var(--line);background:#fff;padding:22px}
+.f-grid{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.f-grid>div:first-child{display:flex;align-items:center;gap:8px}
+
+@media(max-width:640px){
+  #chart{height:340px}
+  .price{font-size:26px}
+  .topbar{padding:12px 14px}
+}
+
+/* ---- live badge ---- */
+.live{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.1em;color:var(--red);border:1px solid var(--red);padding:4px 9px;border-radius:6px}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--red);animation:pl 1.4s infinite}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ---- market table ---- */
+.muted-sm{font-size:12px;color:var(--mut);font-weight:500}
+.market-card .muted-sm{margin-top:10px;display:block}
+.pager{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600}
+.pager button{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;padding:0;border:1px solid var(--line);background:#fff;border-radius:8px;cursor:pointer;color:var(--ink)}
+.pager button svg{width:15px;height:15px}
+.pager button:hover:not(:disabled){border-color:var(--ink)}
+.pager button:disabled{opacity:.35;cursor:default}
+#pgNum{min-width:64px;text-align:center;font-size:12px;color:var(--mut);font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.tbl-wrap{position:relative;overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+#mktTable{width:100%;border-collapse:collapse;font-size:13px;min-width:760px}
+#mktTable thead th{position:sticky;top:0;background:#fafafa;text-align:left;font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap;user-select:none}
+#mktTable thead th[data-k]{cursor:pointer}
+#mktTable thead th[data-k]:hover{color:var(--ink)}
+#mktTable thead th.num,#mktTable td.num{text-align:right}
+#mktTable td{padding:9px 12px;border-bottom:1px solid #f3f3f3;white-space:nowrap;font-variant-numeric:tabular-nums}
+#mktTable tbody tr{cursor:pointer}
+#mktTable tbody tr:hover{background:#fafafa}
+#mktTable tbody tr:last-child td{border-bottom:0}
+.coin-cell{display:flex;align-items:center;gap:10px;font-weight:600}
+.coin-cell .csym{color:var(--mut);font-weight:500;font-size:12px}
+/* coin identicon: deterministic letter badge that always renders, even
+ * when artwork is missing — the <img> sits on top and removes itself
+ * on error, revealing the letter underneath */
+.ident{position:relative;width:26px;height:26px;flex:none;border-radius:50%;
+  background:hsl(var(--h,210),65%,90%);display:inline-flex;align-items:center;justify-content:center;overflow:hidden}
+.ident b{font-size:12px;font-weight:800;color:hsl(var(--h,210),60%,30%);line-height:1}
+.ident img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;background:#fff}
+.ident.sm{width:20px;height:20px}
+.ident.sm b{font-size:10px}
+.spark{width:110px;height:32px;opacity:.9}
+.pos{color:var(--up);font-weight:600}
+.neg{color:var(--down);font-weight:600}
+
+/* ---- sort arrows ---- */
+#mktTable th[data-k][data-dir="asc"]::after{content:"▲";font-size:8px;margin-left:6px;color:var(--red)}
+#mktTable th[data-k][data-dir="desc"]::after{content:"▼";font-size:8px;margin-left:6px;color:var(--red)}
+
+/* ---- market stats strip ---- */
+.mkt-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:14px}
+.gstat{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:#fbfbfb}
+.gstat svg{width:22px;height:22px;color:var(--red);flex:none}
+.gstat .k{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mut);margin-bottom:3px}
+.gstat .v{font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.gstat .v .pos{font-size:12px}
+.gstat .v .neg{font-size:12px}
+.gstat .v .warn{font-size:12px;color:#b45309;font-weight:600}
+/* fear & greed meter: red (fear) -> amber -> green (greed) */
+.fng-meter{display:block;position:relative;width:120px;height:5px;margin-top:7px;border-radius:3px;
+  background:linear-gradient(90deg,#E30613 0%,#E30613 25%,#d97706 45%,#65a30d 70%,#16a34a 100%)}
+.fng-meter i{position:absolute;top:-3px;width:2px;height:11px;background:#111;border-radius:1px;transform:translateX(-1px)}
+
+/* ---- skeleton rows ---- */
+#mktTable tr.skel td{padding:12px}
+#mktTable tr.skel span{display:block;height:14px;border-radius:6px;background:linear-gradient(90deg,#f0f0f0 25%,#e4e4e4 50%,#f0f0f0 75%);background-size:200% 100%;animation:shim 1.2s infinite}
+#mktTable tr.skel{cursor:default}
+#mktTable tr.skel:hover{background:none}
+@keyframes shim{to{background-position:-200% 0}}
+
+/* ---- market error card ---- */
+.mkt-err{display:flex;align-items:center;gap:14px;margin-top:12px;padding:14px 16px;border:1px solid #f3c2c5;background:#fef2f2;border-radius:8px}
+.mkt-err svg{width:26px;height:26px;color:var(--red);flex:none}
+.mkt-err div{flex:1}
+.mkt-err b{display:block;font-size:13px;font-weight:700;margin-bottom:2px}
+.mkt-err span{font-size:12px;color:var(--mut)}
+.mkt-err button{padding:9px 18px;background:var(--red);color:#fff;border:0;border-radius:8px;font-family:var(--font);font-size:13px;font-weight:700;cursor:pointer;flex:none}
+.mkt-err button:hover{background:#b3050f}
+
+/* ---- v1.3.0: market insights (distribution + movers) + table search ---- */
+.m-tools{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.mkt-search{padding:9px 12px;font-size:13px;font-family:var(--font);border:1px solid var(--line);border-radius:8px;outline:none;background:#fff;min-width:170px}
+.mkt-search:focus{border-color:var(--red);box-shadow:0 0 0 3px rgba(227,6,19,.08)}
+.insights{display:grid;grid-template-columns:1.15fr 1fr 1fr;gap:16px;margin:16px 0}
+.ins-card h3{font-size:14px;margin:0 0 10px;letter-spacing:.01em}
+.dist-flex{display:flex;align-items:center;gap:18px}
+.dist-legend{list-style:none;margin:0;padding:0;flex:1;display:flex;flex-direction:column;gap:7px;font-size:13px;min-width:0}
+.dist-legend li{display:flex;align-items:center;gap:8px}
+.dist-legend .dot{width:10px;height:10px;border-radius:3px;flex:none}
+.dl-name{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dl-pct{font-weight:700;font-variant-numeric:tabular-nums}
+.mover{display:flex;align-items:center;gap:10px;padding:8px 6px;border-top:1px solid var(--line);cursor:pointer;border-radius:6px}
+.mover:first-child{border-top:0}
+.mover:hover{background:#f7f7f7}
+.mv-coin{flex:1;display:flex;align-items:center;gap:8px;min-width:0;font-weight:600;font-size:13px}
+.mv-coin>span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mv-coin .csym{color:var(--mut);font-weight:500}
+.mv-px{font-variant-numeric:tabular-nums;font-size:13px;white-space:nowrap}
+.mv-chg{font-variant-numeric:tabular-nums;font-size:13px;min-width:66px;text-align:right;white-space:nowrap}
+.mover-empty{color:var(--mut);font-size:13px;padding:10px 6px}
+@media (max-width:980px){.insights{grid-template-columns:1fr}}
+
+/* ---- v1.9.0: mobile-first interface ----
+ * Phones get a separate tabbed-app feel: a bottom tab bar switches
+ * between Chart / Markets / Insights views instead of one long page,
+ * the market table becomes tappable coin cards, and the stats strip
+ * becomes a swipeable rail. Desktop is untouched. */
+
+/* chart zoom controls — mobile only */
+.zoomctl{display:none}
+@media (max-width:760px){
+  .zoomctl{display:flex;position:absolute;top:8px;right:8px;z-index:5;gap:6px}
+  .zoomctl button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    background:rgba(255,255,255,.94);font-size:17px;font-weight:700;color:var(--ink);
+    display:inline-flex;align-items:center;justify-content:center;cursor:pointer;
+    font-family:var(--font);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+  .zoomctl button:active{background:#f3f4f6;transform:scale(.94)}
+  .zoomctl button:last-child{font-size:14px}
+}
+.tabbar{display:none}
+@media (max-width:760px){
+  .wrap{padding:14px 12px 110px;gap:14px}
+  .card{padding:14px}
+
+  /* bottom tab bar */
+  .tabbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;
+    background:rgba(255,255,255,.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-top:1px solid var(--line);
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom, 0px))}
+  .tabbar button{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    min-height:50px;padding:5px 4px;background:none;border:0;border-radius:12px;cursor:pointer;
+    font-family:var(--font);font-size:10px;font-weight:700;letter-spacing:.02em;color:var(--mut)}
+  .tabbar button svg{width:20px;height:20px}
+  .tabbar button.on{color:var(--red)}
+
+  /* tabbed views — only the active section renders.
+   * NOTE: the show selectors below must stay at least as specific as the
+   * hide selector above (body[data-mview] main.wrap>section[data-view]);
+   * a weaker selector loses the cascade and blanks every mobile view. */
+  body[data-mview] main.wrap>section[data-view]{display:none}
+  body[data-mview="chart"] main.wrap>section[data-view="chart"],
+  body[data-mview="market"] main.wrap>section[data-view="market"],
+  body[data-mview="insights"] main.wrap>section[data-view="insights"]{display:block}
+
+  /* chart view fills the phone */
+  body[data-mview="chart"] .chart-wrap{height:56vh;min-height:340px}
+  body[data-mview="chart"] #chart{height:100%}
+  .chart-controls{width:100%}
+  .tf{overflow-x:auto;max-width:100%}
+  .tf button{padding:7px 11px;font-size:11px;flex:none}
+  .ctype button{padding:7px 10px;font-size:11px}
+  .ctype button svg{width:13px;height:13px}
+
+  /* toolbar: search stays, chips become a swipe rail */
+  .searchbox{max-width:none}
+  .searchbox input{font-size:16px;padding:13px 14px 13px 42px} /* 16px stops iOS auto-zoom */
+  .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;scrollbar-width:none}
+  .chips::-webkit-scrollbar{display:none}
+  .chip-group{flex:none}
+  .chip{padding:8px 14px;font-size:13px}
+
+  /* market table -> coin cards */
+  .tbl-wrap{overflow:visible;border:0}
+  #mktTable{min-width:0}
+  #mktTable thead{display:none}
+  #mktTable,#mktTable tbody,#mktTable tr,#mktTable td{display:block}
+  #mktTable tr{background:#fff;border:1px solid var(--line);border-radius:14px;
+    margin-bottom:10px;padding:13px 14px;cursor:pointer;
+    display:grid;grid-template-columns:1fr auto;grid-template-areas:"coin price" "chg spark";gap:8px 10px;align-items:center}
+  #mktTable tr:active{background:#fafafa;transform:scale(.995)}
+  #mktTable td{border:0;padding:0;white-space:normal}
+  #mktTable td:nth-child(2){grid-area:coin}
+  #mktTable td:nth-child(3){grid-area:price;text-align:right}
+  #mktTable td:nth-child(3) b{font-size:18px}
+  #mktTable td:nth-child(5){grid-area:chg;justify-self:start}
+  #mktTable td:nth-child(11){grid-area:spark;justify-self:end}
+  #mktTable td:nth-child(5) .pos,#mktTable td:nth-child(5) .neg{
+    display:inline-block;padding:5px 12px;border-radius:999px;font-size:13px}
+  #mktTable td:nth-child(5) .pos{background:rgba(22,163,74,.12)}
+  #mktTable td:nth-child(5) .neg{background:rgba(227,6,19,.09)}
+  /* hide the desktop-only columns on cards */
+  #mktTable td:nth-child(1),#mktTable td:nth-child(4),
+  #mktTable td:nth-child(6),#mktTable td:nth-child(7),
+  #mktTable td:nth-child(8),#mktTable td:nth-child(9),
+  #mktTable td:nth-child(10){display:none}
+  #mktTable tr.skel td{display:block} /* skeleton keeps its shimmer bar */
+  #mktTable tr.skel{display:block;padding:12px}
+  .coin-cell .ident{width:30px;height:30px}
+  .coin-cell .ident b{font-size:13px}
+  .spark{width:96px;height:30px}
+  .mkt-search{flex:1;min-width:0;font-size:16px}
+  .pager button{width:42px;height:42px}
+
+  /* stats strip -> compressed swipeable rail */
+  .mkt-stats{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:8px;
+    margin:0 -14px 12px;padding:2px 14px 6px;scrollbar-width:none}
+  .mkt-stats::-webkit-scrollbar{display:none}
+  .gstat{min-width:148px;scroll-snap-align:start;padding:9px 11px;gap:0}
+  .gstat svg{display:none}
+  .gstat .k{font-size:9px;margin-bottom:2px}
+  .gstat .v{font-size:14px}
+  .gstat .v .pos,.gstat .v .neg{font-size:11px}
+  .fng-meter{width:88px;margin-top:5px}
+
+  /* insights stack tighter */
+  .insights{gap:14px;margin:0}
+  .dist-flex{gap:12px}
+
+  /* movers get bigger tap targets */
+  .mover{padding:12px 8px}
+
+  /* footer: never a clipped single row — wrap, center, breathe above the tab bar */
+  footer{padding:16px 16px 4px;border-top:0}
+  .f-grid{align-items:center;text-align:center;font-size:12px;gap:6px}
+  .f-grid>div:first-child{flex-wrap:wrap;justify-content:center;row-gap:2px}
+
+  /* smooth downward scrolling: momentum on iOS, tab bar + chart on their
+   * own compositor layers so they never jank the scroll, and the chart
+   * never traps a vertical swipe */
+  html{-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+  .tabbar{transform:translateZ(0);-webkit-transform:translateZ(0)}
+  #chart{touch-action:pan-y pinch-zoom}
+  #chartWrap{transform:translateZ(0);-webkit-transform:translateZ(0)}
+}
