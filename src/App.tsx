@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent, type RefObject } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { createBrowserRouter, Link, NavLink, Outlet, RouterProvider, useLocation, useNavigate, useSearchParams } from "react-router";
 
 const API = "https://api.coinlore.net/api/tickers/";
 const SIZE = 100;
 const CONTACT = "https://wa.me/923200276941";
-const WEBSITE_CONTACT = "https://wa.me/923062664430";
+const WEBSITE_CONTACT = CONTACT;
 const validPair = (value: string) => /^[A-Z0-9_]+:[A-Z0-9_.!/-]+$/.test(value);
 
-function WebsiteEnquiryDialog({ dialogRef }: { dialogRef: RefObject<HTMLDialogElement | null> }) {
+function WebsiteEnquiryPage() {
   const [readyLink, setReadyLink] = useState("");
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -22,21 +22,27 @@ function WebsiteEnquiryDialog({ dialogRef }: { dialogRef: RefObject<HTMLDialogEl
     setReadyLink(url);
     window.open(url, "_blank", "noopener,noreferrer");
   };
-  const inputClass = "mt-2 min-h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm text-neutral-900 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100";
-  return <dialog ref={dialogRef} aria-labelledby="website-enquiry-title" onClick={event => { if (event.target === event.currentTarget) dialogRef.current?.close(); }} className="fixed inset-0 m-auto max-h-[90dvh] w-[calc(100%-2rem)] max-w-xl overflow-y-auto rounded-2xl border-0 bg-white p-0 text-neutral-900 shadow-2xl backdrop:bg-black/60 backdrop:backdrop-blur-sm">
-    <div className="p-6 sm:p-8">
-      <div className="flex items-start justify-between gap-4"><div><span className="text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-700">WEBSITE ENQUIRY</span><h2 id="website-enquiry-title" className="mt-3 font-[Manrope] text-2xl font-medium">Need a website like this?</h2></div><button type="button" onClick={() => dialogRef.current?.close()} aria-label="Close website enquiry form" className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 hover:bg-neutral-100"><Icon name="close"/></button></div>
-      <p className="mt-3 text-sm leading-6 text-neutral-600">Portfolio ho ya business website—apni requirements batayein, hum bana denge.</p>
-      <form onSubmit={submit} onChange={() => setReadyLink("")} onInput={event => { const field = event.target; if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity(""); }} className="mt-6 space-y-4">
+  const inputClass = "mt-2 min-h-11 w-full rounded-lg border border-neutral-200 bg-white px-3 text-base text-neutral-900 outline-none sm:text-sm";
+  return <section aria-labelledby="website-enquiry-title" className="grid gap-6 py-7 sm:gap-8 sm:py-10 lg:grid-cols-[.85fr_1.15fr] lg:gap-12">
+    <div className="min-w-0 lg:pt-5">
+      <p className="mt-4 text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-700">MBK WEB STUDIO</p>
+      <h1 id="website-enquiry-title" className="mt-3 max-w-md font-[Manrope] text-3xl font-medium leading-tight text-neutral-950 sm:text-4xl">Your business.<br/><span className="text-emerald-700">A better website.</span></h1>
+      <p className="mt-4 max-w-sm text-sm leading-7 text-neutral-600">Portfolio ho ya business website—apna idea share karein, hum usko professional online presence dein.</p>
+      <div className="mt-5 flex flex-wrap gap-2">{["Portfolio", "Business", "Online store"].map(type => <span key={type} className="rounded-full border border-neutral-200 bg-white px-3 py-2 text-[11px] font-medium text-neutral-600">{type}</span>)}</div>
+      <div className="mt-6 max-w-sm border-t border-neutral-200 pt-4"><a href={WEBSITE_CONTACT} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-emerald-700"><Icon name="chat" size={16}/> 03200276941 ↗</a></div>
+    </div>
+    <div className="min-w-0 rounded-2xl border border-neutral-200 bg-white p-5 sm:p-6">
+      <h2 className="font-[Manrope] text-xl font-semibold text-neutral-950">Tell us what you need.</h2>
+      <p className="mt-2 text-xs leading-6 text-neutral-500">A short brief is all it takes to get started.</p>
+      <form onSubmit={submit} onChange={() => setReadyLink("")} onInput={event => { const field = event.target; if (field instanceof HTMLInputElement || field instanceof HTMLTextAreaElement) field.setCustomValidity(""); }} className="website-enquiry-form mt-6 space-y-4">
         <div className="grid gap-4 sm:grid-cols-2"><label className="text-xs font-semibold text-neutral-600">Your name<input name="name" required maxLength={100} autoComplete="name" placeholder="Full name" className={inputClass}/></label><label className="text-xs font-semibold text-neutral-600">WhatsApp / phone<input name="phone" type="tel" required pattern={"[+0-9\\s\\(\\)\\-]{7,20}"} minLength={7} title="Enter a phone number with 7–20 characters; digits, +, spaces, brackets and hyphens are accepted." maxLength={20} autoComplete="tel" placeholder="03xx xxxxxxx" className={inputClass}/></label></div>
         <div className="grid gap-4 sm:grid-cols-2"><label className="text-xs font-semibold text-neutral-600">Website type<select name="websiteType" required defaultValue="" className={inputClass}><option value="" disabled>Select a type</option><option>Portfolio</option><option>Business website</option><option>Online store</option><option>Landing page</option><option>Other / not sure</option></select></label><label className="text-xs font-semibold text-neutral-600">Email <span className="font-normal">(optional)</span><input name="email" type="email" maxLength={150} autoComplete="email" placeholder="you@example.com" className={inputClass}/></label></div>
         <label className="block text-xs font-semibold text-neutral-600">What would you like to build?<textarea name="details" required minLength={10} maxLength={1500} rows={3} placeholder="Pages, features, design ideas, and any deadline…" className={inputClass + " resize-y py-3"}/></label>
         <button type="submit" className="flex min-h-12 w-full items-center justify-between gap-3 rounded-lg bg-emerald-800 px-5 text-sm font-semibold text-white hover:bg-emerald-900"><span className="flex items-center gap-2"><Icon name="chat" size={16}/> Continue on WhatsApp</span><span aria-hidden="true">↗</span></button>
-        <p className="text-[11px] leading-5 text-neutral-500">All form details open as a WhatsApp message to 03062664430. Review it and press Send. No enquiry data is saved on this website.</p>
         {readyLink && <p role="status" className="rounded-lg bg-emerald-50 p-3 text-xs leading-6 text-emerald-900">Message ready. If WhatsApp did not open, <a href={readyLink} target="_blank" rel="noopener noreferrer" className="font-semibold underline">open your prepared message here</a>.</p>}
       </form>
     </div>
-  </dialog>;
+  </section>;
 }
 
 function CoursesPage() {
@@ -117,9 +123,9 @@ function getDirectory(): Promise<DirectorySnapshot> {
       const timeout = setTimeout(() => controller.abort(), 20000);
       try {
         const response = await fetch(`${API}?start=${start}&limit=${SIZE}`, { signal: controller.signal });
-        if (!response.ok) throw new Error(`CoinLore directory request failed (${response.status}). Please retry.`);
+        if (!response.ok) throw new Error(`Directory request failed (${response.status}). Please retry.`);
         const result = await response.json();
-        if (!Array.isArray(result.data) || result.data.some((coin: Coin) => !coin || typeof coin.id !== "string" || typeof coin.name !== "string" || typeof coin.symbol !== "string")) throw new Error("Invalid CoinLore directory response.");
+        if (!Array.isArray(result.data) || result.data.some((coin: Coin) => !coin || typeof coin.id !== "string" || typeof coin.name !== "string" || typeof coin.symbol !== "string")) throw new Error("Invalid directory response.");
         return result as { data: Coin[]; info: { coins_num: number } };
       } finally { clearTimeout(timeout); }
     };
@@ -214,7 +220,7 @@ function Mark({ coin }: { coin: Coin }) {
   useEffect(() => { setFailed(false); }, [coin.nameid]);
   return <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-neutral-200 bg-white">
     {coin.nameid && !failed ? <img src={`https://www.coinlore.com/img/25x25/${encodeURIComponent(coin.nameid)}.png`} alt={`${coin.name} logo`} width={28} height={28} loading="lazy" decoding="async" onError={() => setFailed(true)} className="h-7 w-7 object-contain"/> :
-      <span title="Logo unavailable from provider" aria-label={`${coin.name} logo unavailable`} className="text-neutral-400"><Icon name="layers" size={16}/></span>}
+      <span title="Logo unavailable" aria-label={`${coin.name} logo unavailable`} className="text-neutral-400"><Icon name="layers" size={16}/></span>}
   </span>;
 }
 
@@ -237,25 +243,24 @@ function LiveMarketChart({ symbol, notice }: { symbol: string | null; notice: st
   const chartUrl = "https://s.tradingview.com/widgetembed/?" + params.toString();
   const frameKey = chartUrl + revision;
 
-  return <section id="live-charts" aria-label="TradingView market chart" className="mb-12 scroll-mt-24 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_8px_32px_#17171708]">
+  return <section id="live-charts" aria-label="Live market chart" className="mb-12 scroll-mt-24 overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-[0_8px_32px_#17171708]">
     <div className="flex flex-wrap items-center gap-3 border-b border-neutral-100 bg-neutral-50/60 p-3 sm:gap-4 sm:p-4">
-      <div className="flex w-full items-center justify-between gap-1 rounded-xl border border-neutral-200 bg-white p-1 xl:w-auto" aria-label="Chart timeframe">
+      <div className="grid w-full min-w-0 grid-cols-6 gap-1 rounded-xl border border-neutral-200 bg-white p-1 xl:w-auto" aria-label="Chart timeframe">
         {[["1", "1m"], ["15", "15m"], ["60", "1h"], ["240", "4h"], ["D", "1D"], ["W", "1W"]].map(([value, label]) => <button key={value} onClick={() => setInterval(value)} aria-pressed={interval === value}
-          className={"min-h-10 flex-1 rounded-lg px-3 text-xs font-semibold transition " + (interval === value ? "bg-emerald-600 text-white shadow-sm" : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900")}>{label}</button>)}
+          className={"min-h-11 min-w-0 rounded-lg px-1 text-xs sm:px-3 font-semibold transition " + (interval === value ? "bg-emerald-600 text-white shadow-sm" : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-900")}>{label}</button>)}
       </div>
     </div>
     {notice && <p role="status" className="border-b border-amber-100 bg-amber-50 px-4 py-3 text-xs leading-relaxed text-amber-800">{notice}</p>}
     <div className="relative h-[430px] sm:h-[540px] lg:h-[580px]">
       {!activeSymbol ? <div role="status" className="flex h-full items-center justify-center bg-neutral-50 px-6 text-center text-sm leading-relaxed text-neutral-500">{notice || "Select a market to open its chart."}</div> : <>
-        {loadedFrame !== frameKey && <div role="status" className="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-50 text-sm text-neutral-500">Loading TradingView chart…</div>}
-        <iframe key={frameKey} src={chartUrl} title={activeSymbol + " TradingView chart"} onLoad={() => setLoadedFrame(frameKey)} className="relative h-full w-full border-0" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/>
+        {loadedFrame !== frameKey && <div role="status" className="pointer-events-none absolute inset-0 flex items-center justify-center bg-neutral-50 text-sm text-neutral-500">Loading chart…</div>}
+        <iframe key={frameKey} src={chartUrl} title={activeSymbol + " market chart"} onLoad={() => setLoadedFrame(frameKey)} className="relative h-full w-full border-0" allowFullScreen referrerPolicy="strict-origin-when-cross-origin"/>
       </>}
     </div>
   </section>;
 }
 
 function MarketWorkspace() {
-  const websiteDialog = useRef<HTMLDialogElement | null>(null);
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -300,11 +305,11 @@ function MarketWorkspace() {
   }, [saved]);
   const toggleSaved = (id: string) => setSaved(current => current.includes(id) ? current.filter(value => value !== id) : [...current, id]);
   useEffect(() => {
-    document.title = `${isCourses ? "Courses" : isCharts ? "Live charts" : isHome ? "Crypto markets" : "Coins"} | MBK Global Market`;
+    document.title = `${location.pathname === "/need-a-website" ? "Website enquiry" : isCourses ? "Courses" : isCharts ? "Live charts" : isHome ? "Crypto markets" : "Coins"} | MBK Global Market`;
     const closeMenu = (event: KeyboardEvent) => { if (event.key === "Escape") setMenu(false); };
     window.addEventListener("keydown", closeMenu);
     return () => window.removeEventListener("keydown", closeMenu);
-  }, [isCourses, isCharts, isHome]);
+  }, [isCourses, isCharts, isHome, location.pathname]);
   const pages = Math.max(1, Math.ceil((total ?? 0) / SIZE));
   useEffect(() => {
     if (location.pathname !== "/coins") return;
@@ -345,7 +350,7 @@ function MarketWorkspace() {
       const timestamp = numeric(result.info?.time);
       setUpdated(timestamp !== null && timestamp > 0 && Number.isFinite(new Date(timestamp * 1000).getTime()) ? new Date(timestamp * 1000) : null);
     } catch (reason) {
-      if (currentRequest === requestId.current && !signal?.aborted && (timedOut || (reason as Error).name !== "AbortError")) setError(timedOut ? "CoinLore took too long to respond. Please try again." : "CoinLore data is unavailable or invalid. Please try again.");
+      if (currentRequest === requestId.current && !signal?.aborted && (timedOut || (reason as Error).name !== "AbortError")) setError(timedOut ? "Market data took too long to respond. Please try again." : "Market data is unavailable or invalid. Please try again.");
     } finally {
       window.clearTimeout(timeout);
       signal?.removeEventListener("abort", abort);
@@ -438,12 +443,12 @@ function MarketWorkspace() {
       }).sort((first, second) => first.score - second.score || second.volume - first.volume);
       if (controller.signal.aborted) return;
       if (!candidates.length) {
-        setChartNotice(`No supported exchange chart was found for ${coin.name} (${coin.symbol}). You can search an exact TradingView pair above. No unrelated coin or dummy data is shown.`);
+        setChartNotice(`No supported exchange chart was found for ${coin.name} (${coin.symbol}). You can search an exact exchange pair above. No unrelated coin or dummy data is shown.`);
         return;
       }
       setChartSymbol(candidates[0].symbol);
       navigate(`/live-charts?${new URLSearchParams({ symbol: candidates[0].symbol })}`, { replace: true });
-      setChartNotice(`${coin.name} (${coin.symbol}) · ${candidates[0].symbol} · Market listed by CoinLore. Chart coverage depends on TradingView.`);
+      setChartNotice(`${coin.name} (${coin.symbol}) · ${candidates[0].symbol}`);
     } catch {
       if (!controller.signal.aborted) setChartNotice(`Could not load exchange markets for ${coin.name}. Click its Chart button to retry, or search its exact exchange pair above.`);
     } finally {
@@ -456,30 +461,29 @@ function MarketWorkspace() {
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur-xl">
       <div className="mx-auto flex h-20 max-w-[1440px] items-center justify-between gap-5 px-5 sm:px-8 lg:px-[42px]">
         <Link to="/" aria-label="MBK Global Market home" className="shrink-0 font-[Manrope] text-base font-bold text-neutral-950 sm:text-lg">MBK <span className="font-medium text-emerald-700">Global Market</span></Link>
-        <nav aria-label="Main navigation" className="hidden items-center gap-1 md:flex">
+        <nav aria-label="Main navigation" className="hidden items-center gap-1 lg:flex">
           {[["/", "Home"], ["/coins", "Coins"], ["/live-charts", "Live charts"], ["/courses", "Courses"]].map(([path, label]) => <NavLink key={path} to={path} end={path === "/"} className={({ isActive }) => `flex min-h-11 items-center rounded-lg px-4 text-xs font-semibold transition ${isActive ? "bg-emerald-50 text-emerald-800" : "text-neutral-500 hover:bg-neutral-50 hover:text-neutral-950"}`}>{label}</NavLink>)}
         </nav>
-        <div className="flex items-center gap-2"><button type="button" onClick={() => websiteDialog.current?.showModal()} className="hidden min-h-11 items-center gap-2 rounded-lg bg-neutral-950 px-4 text-xs font-semibold text-white transition hover:bg-emerald-800 sm:inline-flex">Need a website? ↗</button><button className="flex h-11 w-11 items-center justify-center rounded-lg border border-neutral-200 text-neutral-700 md:hidden" onClick={() => setMenu(!menu)} aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} aria-controls="mobile-navigation"><Icon name={menu ? "close" : "menu"}/></button></div>
+        <div className="flex items-center gap-2"><Link to="/need-a-website" className="hidden min-h-11 items-center gap-2 rounded-lg bg-neutral-950 px-4 text-xs font-semibold text-white transition hover:bg-emerald-800 sm:inline-flex">Need a website? ↗</Link><button className="flex h-11 w-11 items-center justify-center border-0 bg-transparent text-neutral-950 lg:hidden" onClick={() => setMenu(!menu)} aria-label={menu ? "Close menu" : "Open menu"} aria-expanded={menu} aria-controls="mobile-navigation"><Icon name={menu ? "close" : "menu"}/></button></div>
       </div>
-      {menu && <nav id="mobile-navigation" aria-label="Mobile navigation" className="grid grid-cols-2 gap-2 border-t border-neutral-100 p-4 md:hidden" onClick={() => setMenu(false)}>{[["/", "Home"], ["/coins", "Coins"], ["/live-charts", "Live charts"], ["/courses", "Courses"]].map(([path, label]) => <NavLink key={path} to={path} end={path === "/"} className={({ isActive }) => `flex min-h-12 items-center rounded-lg px-4 text-sm font-semibold ${isActive ? "bg-emerald-50 text-emerald-800" : "bg-neutral-50 text-neutral-600"}`}>{label}</NavLink>)}<button type="button" onClick={event => { event.stopPropagation(); setMenu(false); websiteDialog.current?.showModal(); }} className="col-span-2 flex min-h-12 items-center justify-between rounded-lg bg-neutral-950 px-4 text-sm font-semibold text-white">Need a website? <span aria-hidden="true">↗</span></button></nav>}
+      {menu && <nav id="mobile-navigation" aria-label="Mobile navigation" className="grid grid-cols-2 gap-2 border-t border-neutral-100 p-4 lg:hidden" onClick={() => setMenu(false)}>{[["/", "Home"], ["/coins", "Coins"], ["/live-charts", "Live charts"], ["/courses", "Courses"]].map(([path, label]) => <NavLink key={path} to={path} end={path === "/"} className={({ isActive }) => `flex min-h-12 items-center rounded-lg px-4 text-sm font-semibold ${isActive ? "bg-emerald-50 text-emerald-800" : "bg-neutral-50 text-neutral-600"}`}>{label}</NavLink>)}<Link to="/need-a-website" className="col-span-2 flex min-h-12 items-center justify-between rounded-lg bg-neutral-950 px-4 text-sm font-semibold text-white">Need a website? <span aria-hidden="true">↗</span></Link></nav>}
     </header>
-    <WebsiteEnquiryDialog dialogRef={websiteDialog}/>
 
     <main id="top">
       {isHome && <section className="grid gap-8 py-8 sm:gap-10 sm:py-12 lg:grid-cols-[1.15fr_.85fr] lg:items-center lg:py-14">
-        <div className="min-w-0"><div className="mb-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500"><span className="h-px w-8 bg-emerald-700"/> THE MBK MARKET DESK</div><h1 className="max-w-2xl font-[Manrope] text-[clamp(2.8rem,5.8vw,5.5rem)] font-medium leading-[1.04] tracking-[-.02em] text-neutral-950">The market.<br/><span className="text-emerald-700">In perspective.</span></h1><p className="mt-6 max-w-sm text-sm leading-7 text-neutral-600">Follow crypto prices, compare performance, and open the charts that matter.</p><div className="mt-7 flex flex-wrap items-center gap-3"><a href="#markets" className="inline-flex min-h-12 items-center gap-7 rounded-lg bg-neutral-950 px-5 text-xs font-semibold text-white transition hover:bg-emerald-800">Explore the market <span aria-hidden="true">↓</span></a><Link to="/live-charts" className="inline-flex min-h-12 items-center gap-3 rounded-lg px-4 text-xs font-semibold text-neutral-700 hover:bg-white"><Icon name="activity" size={15}/> Open charts ↗</Link></div></div>
+        <div className="min-w-0"><div className="mb-6 flex items-center gap-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-neutral-500"><span className="h-px w-8 bg-emerald-700"/> THE MBK MARKET DESK</div><h1 className="max-w-2xl font-[Manrope] text-[clamp(2.25rem,8vw,3.25rem)] sm:text-[clamp(3.5rem,5.8vw,5.5rem)] font-medium leading-[1.04] tracking-[-.02em] text-neutral-950">The market.<br/><span className="text-emerald-700">In perspective.</span></h1><p className="mt-6 max-w-sm text-sm leading-7 text-neutral-600">Follow crypto prices, compare performance, and open the charts that matter.</p><div className="mt-7 grid grid-cols-2 items-stretch gap-2 sm:flex sm:gap-3"><a href="#markets" className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg bg-neutral-950 px-3 text-[11px] sm:gap-7 sm:px-5 sm:text-xs font-semibold text-white transition hover:bg-emerald-800">Explore market <span aria-hidden="true">↓</span></a><Link to="/live-charts" className="inline-flex min-h-12 min-w-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-neutral-200 px-3 text-[11px] sm:gap-3 sm:px-4 sm:text-xs font-semibold text-neutral-700 hover:bg-white"><Icon name="activity" size={15}/> Open charts ↗</Link></div></div>
         <div className="overflow-hidden rounded-2xl bg-neutral-950 text-white">
           <div className="flex items-center justify-between border-b border-white/10 px-6 py-5 sm:px-7"><span className="text-[10px] font-semibold uppercase tracking-[.16em] text-neutral-400">Market leaders</span><span className="text-[10px] text-neutral-400">Price / 24h</span></div>
           <div aria-busy={loading} className="min-h-56 px-6 sm:px-7">
-            {loading ? <div role="status" className="flex min-h-56 items-center justify-center text-xs text-neutral-400">Fetching CoinLore prices…</div> : error ? <div role="status" className="flex min-h-56 items-center justify-center text-xs text-neutral-400">Market data unavailable</div> : coins.slice(0, 3).map(coin => <div key={coin.id} className="flex items-center justify-between gap-4 border-b border-white/10 py-5 last:border-b-0"><div className="flex min-w-0 items-center gap-3"><Mark coin={coin}/><div className="min-w-0"><p className="truncate text-sm font-semibold">{coin.name}</p><p className="mt-1 text-[10px] text-neutral-400">{coin.symbol}</p></div></div><div className="shrink-0 text-right"><p className="font-mono text-sm font-medium">{money(coin.price_usd)}</p><p className={`mt-1 font-mono text-[11px] ${numeric(coin.percent_change_24h) === null ? "text-neutral-400" : Number(coin.percent_change_24h) >= 0 ? "text-emerald-300" : "text-rose-300"}`}>{numeric(coin.percent_change_24h) === null ? "—" : `${Number(coin.percent_change_24h) >= 0 ? "+" : ""}${Number(coin.percent_change_24h).toFixed(2)}%`}</p></div></div>)}
-          </div><div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-4 text-[10px] text-neutral-400 sm:px-7"><span>Source: CoinLore · USD</span><span>{checked && !error ? `Checked ${checked.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "Awaiting prices"}</span></div>
+            {loading ? <div role="status" className="flex min-h-56 items-center justify-center text-xs text-neutral-400">Fetching prices…</div> : error ? <div role="status" className="flex min-h-56 items-center justify-center text-xs text-neutral-400">Market data unavailable</div> : coins.slice(0, 3).map(coin => <div key={coin.id} className="flex items-center justify-between gap-4 border-b border-white/10 py-5 last:border-b-0"><div className="flex min-w-0 items-center gap-3"><Mark coin={coin}/><div className="min-w-0"><p className="truncate text-sm font-semibold">{coin.name}</p><p className="mt-1 text-[10px] text-neutral-400">{coin.symbol}</p></div></div><div className="shrink-0 text-right"><p className="font-mono text-sm font-medium">{money(coin.price_usd)}</p><p className={`mt-1 font-mono text-[11px] ${numeric(coin.percent_change_24h) === null ? "text-neutral-400" : Number(coin.percent_change_24h) >= 0 ? "text-emerald-300" : "text-rose-300"}`}>{numeric(coin.percent_change_24h) === null ? "—" : `${Number(coin.percent_change_24h) >= 0 ? "+" : ""}${Number(coin.percent_change_24h).toFixed(2)}%`}</p></div></div>)}
+          </div><div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 px-6 py-4 text-[10px] text-neutral-400 sm:px-7"><span>Prices in USD</span><span>{checked && !error ? `Checked ${checked.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : "Awaiting prices"}</span></div>
         </div>
       </section>}
       {isCharts && <section className="flex flex-wrap items-end justify-between gap-5 border-b border-neutral-200 pt-9 pb-7 sm:pt-12"><div><span className="text-[10px] font-semibold uppercase tracking-[.16em] text-emerald-700">CHART WORKSPACE</span><h1 className="mt-3 font-[Manrope] text-3xl font-medium text-neutral-950 sm:text-4xl">A closer look at the market.</h1></div><p className="max-w-xs text-xs leading-6 text-neutral-500">Search a coin or exchange pair.<br/>Choose your view and timeframe.</p></section>}
 
       {location.pathname === "/coins" && <section className="overview" id="overview">
         {[
-          ["globe", "blue", "Listed assets", total?.toLocaleString() ?? "—", total === null ? "Awaiting API response" : `Across ${pages} pages`],
+          ["globe", "blue", "Listed assets", total?.toLocaleString() ?? "—", total === null ? "Awaiting data" : `Across ${pages} pages`],
           ["layers", "violet", "Page market cap", loading || error ? "—" : money(stats.cap, true), "Calculated from page data"],
           ["activity", "cyan", "Page 24h volume", loading || error ? "—" : money(stats.volume, true), "Calculated from page data"],
           ["trend", "green", "Market breadth", loading || error ? "—" : stats.breadth, "Gainers among reported changes"],
@@ -487,23 +491,23 @@ function MarketWorkspace() {
       </section>}
 
       {isCharts && <div className="pt-8">
-        <div className="mb-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {[["Bitcoin", "BINANCE:BTCUSDT"], ["Ethereum", "BINANCE:ETHUSDT"], ["Solana", "BINANCE:SOLUSDT"], ["Gold / USD", "OANDA:XAUUSD"]].map(([name, symbol]) => <button key={symbol} onClick={() => { chartRequest.current?.abort(); setChartSymbol(symbol); setChartNotice(""); setSearchParams({ symbol }); }} className="flex items-center justify-between rounded-xl border border-neutral-200 bg-white p-4 text-left transition hover:border-emerald-300 hover:shadow-sm"><span><strong className="block text-sm text-neutral-900">{name}</strong><small className="mt-1 block text-[10px] text-neutral-400">{symbol}</small></span><span className="text-emerald-600">↗</span></button>)}
+        <div className="mb-5 grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4">
+          {[["Bitcoin", "BINANCE:BTCUSDT"], ["Ethereum", "BINANCE:ETHUSDT"], ["Solana", "BINANCE:SOLUSDT"], ["Gold / USD", "OANDA:XAUUSD"]].map(([name, symbol]) => <button key={symbol} onClick={() => { chartRequest.current?.abort(); setChartSymbol(symbol); setChartNotice(""); setSearchParams({ symbol }); }} className="flex min-h-20 min-w-0 items-center justify-between gap-2 rounded-xl border border-neutral-200 bg-white p-3 text-left sm:p-4 transition hover:border-emerald-300 hover:shadow-sm"><span className="min-w-0"><strong className="block text-xs text-neutral-900 sm:text-sm">{name}</strong><small className="mt-1 block truncate text-[10px] text-neutral-400">{symbol}</small></span><span className="text-emerald-600">↗</span></button>)}
         </div>
         <LiveMarketChart symbol={chartSymbol} notice={chartNotice}/>
         <Link to="/coins" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-emerald-600">← Browse all coins</Link>
       </div>}
 
       {isMarketPage && <section id="markets" className="scroll-mt-24">
-        <div className="section-heading"><div><h2>{isSearching ? "Directory search results" : isHome ? "Market overview" : "All cryptocurrencies"}</h2><p>{isSearching ? "Full CoinLore directory · 100 results per page" : isHome ? "Top 100 · CoinLore" : "100 coins per page · CoinLore"}</p></div>
+        <div className="section-heading"><div><h2>{isSearching ? "Directory search results" : isHome ? "Market overview" : "All cryptocurrencies"}</h2><p>{isSearching ? "Full directory · 100 results per page" : isHome ? "Top 100" : "100 coins per page"}</p></div>
           <button className="refresh" onClick={() => isSearching ? directory.reload() : load(isHome ? 1 : page)} disabled={displayLoading}><Icon name="refresh"/><span>{displayLoading ? "Refreshing" : "Refresh data"}</span></button></div>
         <div className="toolbar">
-          <form role="search" aria-label="Search all CoinLore coins" className="search" onSubmit={event => { event.preventDefault(); setFilter("all"); }}><Icon name="search"/><input type="search" autoComplete="off" aria-label="Coin name, symbol, or pair across the full directory" value={query} onChange={event => { setQuery(event.target.value); setFilter("all"); }} placeholder="Search all coins: name or symbol"/>{query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search"><Icon name="close" size={14}/></button>}<button type="submit" className="min-h-11 shrink-0 !px-2 !text-xs !font-semibold !text-emerald-700">Search</button></form>
-          <div className="filters" aria-label="Market filters">{(["all", "top", "gainers", "losers", "saved"] as Filter[]).map(f => <button key={f} aria-pressed={filter === f} className={filter === f ? "active" : ""} onClick={() => setFilter(f)}>{f === "all" ? "All assets" : f === "top" ? "Top 100" : f === "saved" ? "Watchlist" : f[0].toUpperCase() + f.slice(1)}</button>)}</div>
+          <form role="search" aria-label="Search all coins" className="search" onSubmit={event => { event.preventDefault(); setFilter("all"); }}><Icon name="search"/><input type="search" autoComplete="off" aria-label="Coin name, symbol, or pair across the full directory" value={query} onChange={event => { setQuery(event.target.value); setFilter("all"); }} placeholder="Search all coins: name or symbol"/>{query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search"><Icon name="close" size={14}/></button>}<button type="submit" className="min-h-11 shrink-0 !px-2 !text-xs !font-semibold !text-emerald-700">Search</button></form>
+          <div className="filters" aria-label="Market filters">{(["all", "top", "gainers", "losers", "saved"] as Filter[]).map(f => <button key={f} aria-pressed={filter === f} className={filter === f ? "active" : ""} onClick={() => setFilter(f)}>{f === "all" ? <><span className="sm:hidden">All</span><span className="hidden sm:inline">All assets</span></> : f === "top" ? "Top 100" : f === "saved" ? "Watchlist" : f[0].toUpperCase() + f.slice(1)}</button>)}</div>
         </div>
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 text-xs text-neutral-600">
-          <p role="status">{isSearching ? directory.loading ? `Loading full CoinLore directory… ${directory.progress.loaded.toLocaleString()} / ${directory.progress.total.toLocaleString() || "—"}` : directory.error ? "Directory search unavailable" : `${allRows.length.toLocaleString()} matches across ${directory.snapshot?.coins.length.toLocaleString() ?? "—"} API coins · Search snapshot ${directory.snapshot ? new Date(directory.snapshot.received).toLocaleTimeString() : "—"}` : loading ? "Updating market data…" : error ? "Data unavailable" : `${rows.length} coins${checked ? ` · Checked ${checked.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}`}{filter === "saved" ? " · Watchlist" : ""}</p>
-          <label className="flex items-center gap-2">Sort by <select aria-label="Sort coins" value={`${sort.key}:${sort.dir}`} onChange={event => { const [key, direction] = event.target.value.split(":"); setSort({ key: key as Sort, dir: Number(direction) as 1 | -1 }); }} className="min-h-11 rounded-lg border border-neutral-200 bg-white px-3 text-neutral-800">
+        <div className="mb-4 grid gap-3 text-xs text-neutral-600 sm:flex sm:flex-wrap sm:items-center sm:justify-between">
+          <p role="status">{isSearching ? directory.loading ? `Loading full directory… ${directory.progress.loaded.toLocaleString()} / ${directory.progress.total.toLocaleString() || "—"}` : directory.error ? "Directory search unavailable" : `${allRows.length.toLocaleString()} matches across ${directory.snapshot?.coins.length.toLocaleString() ?? "—"} coins · Updated ${directory.snapshot ? new Date(directory.snapshot.received).toLocaleTimeString() : "—"}` : loading ? "Updating market data…" : error ? "Data unavailable" : `${rows.length} coins${checked ? ` · Checked ${checked.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}`}{filter === "saved" ? " · Watchlist" : ""}</p>
+          <label className="flex min-w-0 items-center justify-between gap-2">Sort by <select aria-label="Sort coins" value={`${sort.key}:${sort.dir}`} onChange={event => { const [key, direction] = event.target.value.split(":"); setSort({ key: key as Sort, dir: Number(direction) as 1 | -1 }); }} className="min-h-11 min-w-0 flex-1 rounded-lg border border-neutral-200 bg-white px-3 text-base text-neutral-800 sm:flex-none sm:text-xs">
             <option value="rank:1">Rank ↑</option><option value="rank:-1">Rank ↓</option><option value="name:1">Name A–Z</option><option value="name:-1">Name Z–A</option><option value="price_usd:-1">Price high–low</option><option value="price_usd:1">Price low–high</option><option value="percent_change_24h:-1">24h best first</option><option value="percent_change_24h:1">24h worst first</option><option value="market_cap_usd:-1">Market cap high–low</option><option value="market_cap_usd:1">Market cap low–high</option>
           </select></label>
         </div>
@@ -518,7 +522,7 @@ function MarketWorkspace() {
             <th className="right">24h volume</th><th className="right" aria-sort={sortDirection("market_cap_usd")}><button onClick={() => sortBy("market_cap_usd")}>Market cap{sortArrow("market_cap_usd")}</button></th>
           </tr></thead><tbody>
             {displayLoading ? Array.from({ length: 8 }, (_, i) => <tr className="skeleton" key={i}><td colSpan={8}><span/></td></tr>) :
-            rows.map(c => <tr key={c.id}><td className="rank">{c.rank ?? "—"}</td><td><div className="coin-name"><Mark coin={c}/><div><strong>{c.name}</strong><span className="flex flex-wrap items-center gap-1">{c.symbol} <button aria-label={`Find ${c.name} chart`} onClick={() => showChart(c)} className="min-h-11 rounded border sm:min-h-8 border-emerald-100 bg-emerald-50 px-2 text-[10px] font-semibold text-emerald-700 hover:bg-emerald-100">Chart ↗</button><button aria-label={`${saved.includes(c.id) ? "Remove" : "Save"} ${c.name} ${saved.includes(c.id) ? "from" : "to"} watchlist`} aria-pressed={saved.includes(c.id)} onClick={() => toggleSaved(c.id)} className={`flex h-11 w-11 items-center sm:h-8 sm:w-8 justify-center rounded border text-lg ${saved.includes(c.id) ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-neutral-200 text-neutral-500 hover:bg-neutral-100"}`}><span aria-hidden="true">{saved.includes(c.id) ? "★" : "☆"}</span></button></span></div></div>
+            rows.map(c => <tr key={c.id}><td className="rank">{c.rank ?? "—"}</td><td><div className="coin-name"><Mark coin={c}/><div><strong>{c.name}</strong><span>{c.symbol}</span></div></div><div className="coin-actions"><button aria-label={`Find ${c.name} chart`} onClick={() => showChart(c)} className="min-h-11 rounded border sm:min-h-8 border-emerald-100 bg-emerald-50 px-2 text-[10px] font-semibold text-emerald-700 hover:bg-emerald-100">Chart ↗</button><button aria-label={`${saved.includes(c.id) ? "Remove" : "Save"} ${c.name} ${saved.includes(c.id) ? "from" : "to"} watchlist`} aria-pressed={saved.includes(c.id)} onClick={() => toggleSaved(c.id)} className={`flex h-11 w-11 items-center sm:h-8 sm:w-8 justify-center rounded border text-lg ${saved.includes(c.id) ? "border-emerald-200 bg-emerald-50 text-emerald-700" : "border-neutral-200 text-neutral-500 hover:bg-neutral-100"}`}><span aria-hidden="true">{saved.includes(c.id) ? "★" : "☆"}</span></button></div>
               <details className="mobile-metrics mt-3">
                 <summary className="cursor-pointer text-xs font-semibold text-neutral-500">More market details</summary>
                 <dl className="mt-3 grid grid-cols-2 gap-x-3 gap-y-3 whitespace-normal text-xs">
@@ -532,7 +536,7 @@ function MarketWorkspace() {
               <td className="right price">{money(c.price_usd)}</td><td className="right"><Change value={c.percent_change_1h}/></td><td className="right"><Change value={c.percent_change_24h}/></td>
               <td className="right"><Change value={c.percent_change_7d}/></td><td className="right">{money(c.volume24, true)}</td><td className="right">{money(c.market_cap_usd, true)}</td></tr>)}
           </tbody></table>{!displayLoading && !rows.length && <div className="empty"><Icon name="search" size={24}/><strong>{filter === "saved" ? "No matching saved coins" : "No assets found"}</strong><span>{filter === "saved" ? "Use the star beside a coin to save it." : "Try a different name, symbol, or filter."}</span><button onClick={() => { setQuery(""); setFilter("all"); }} className="mt-3 min-h-11 rounded-lg bg-emerald-700 px-4 text-sm font-semibold text-white">Show all coins</button></div>}</div>}
-          {isSearching && !displayLoading && !displayError && <nav aria-label="Search results pagination" className="flex flex-wrap items-center justify-between gap-3 border-t border-neutral-200 bg-white p-4"><button disabled={activeResultPage === 1} onClick={() => setResultPage(activeResultPage - 1)} className="min-h-11 rounded-lg border border-neutral-200 px-4 text-xs font-semibold disabled:opacity-40">← Previous results</button><span className="text-xs text-neutral-600">Page {activeResultPage} of {resultPages} · {allRows.length.toLocaleString()} matches</span><button disabled={activeResultPage >= resultPages} onClick={() => setResultPage(activeResultPage + 1)} className="min-h-11 rounded-lg bg-emerald-800 px-4 text-xs font-semibold text-white disabled:opacity-40">Next results →</button></nav>}
+          {isSearching && !displayLoading && !displayError && <nav aria-label="Search results pagination" className="grid grid-cols-2 items-center gap-3 border-t border-neutral-200 bg-white p-4 sm:flex sm:justify-between"><button disabled={activeResultPage === 1} onClick={() => setResultPage(activeResultPage - 1)} className="min-h-11 rounded-lg border border-neutral-200 px-4 text-xs font-semibold disabled:opacity-40">← Previous</button><span className="col-span-2 row-start-1 text-center text-xs text-neutral-600">Page {activeResultPage} of {resultPages} · {allRows.length.toLocaleString()} matches</span><button disabled={activeResultPage >= resultPages} onClick={() => setResultPage(activeResultPage + 1)} className="min-h-11 rounded-lg bg-emerald-800 px-4 text-xs font-semibold text-white disabled:opacity-40">Next →</button></nav>}
           {!isHome && !isSearching && <div className="mt-4 rounded-xl border border-neutral-200 bg-white p-4 sm:mt-0 sm:rounded-none sm:border-x-0 sm:border-b-0 sm:p-6">
             <div className="mb-5 grid gap-5 rounded-xl border border-neutral-100 bg-neutral-50/80 p-4 sm:p-5 lg:grid-cols-[1fr_1fr_auto] lg:items-center">
               <div className="flex items-center gap-4" aria-live="polite">
@@ -540,7 +544,7 @@ function MarketWorkspace() {
                 <div>
                   <p className="mb-1 text-[9px] font-bold tracking-[0.16em] text-neutral-400">YOUR MARKET WORKSPACE</p>
                   <p className="text-base font-bold text-neutral-900">Page {page} <span className="font-normal text-neutral-400">of {total === null ? "—" : pages}</span></p>
-                  <p className="mt-1 text-xs text-neutral-500">{loading ? "Fetching provider data…" : error ? "Data unavailable" : `${rows.length} assets on this page`}</p>
+                  <p className="mt-1 text-xs text-neutral-500">{loading ? "Fetching data…" : error ? "Data unavailable" : `${rows.length} assets on this page`}</p>
                 </div>
               </div>
               <div className="lg:border-l lg:border-neutral-200 lg:pl-5">
@@ -549,39 +553,42 @@ function MarketWorkspace() {
                   <span className="tabular-nums text-neutral-400">{total === null ? "—" : `${page} / ${pages} pages`}</span>
                 </div>
                 <progress value={total === null ? 0 : page} max={pages} aria-label="Market directory page progress" className="block h-1.5 w-full overflow-hidden rounded-full appearance-none [&::-webkit-progress-bar]:rounded-full [&::-webkit-progress-bar]:bg-neutral-200 [&::-webkit-progress-value]:rounded-full [&::-webkit-progress-value]:bg-emerald-600 [&::-moz-progress-bar]:bg-emerald-600"/>
-                {updated && <p className="mt-2 text-[10px] leading-relaxed text-neutral-400">CoinLore snapshot · {updated.toLocaleString()}</p>}
+                {updated && <p className="mt-2 text-[10px] leading-relaxed text-neutral-400">Updated · {updated.toLocaleString()}</p>}
               </div>
               <label className="flex items-center gap-2 text-xs text-neutral-500">Go to page
                 <input key={page} aria-label="Go to page number" disabled={loading || total === null} className="h-11 w-16 rounded-lg border border-neutral-200 text-center text-neutral-800 outline-none focus:border-emerald-500 disabled:opacity-50" type="number" min="1" max={pages} step="1" defaultValue={page} onBlur={e => { const next = Math.max(1, Math.min(pages, Math.trunc(+e.target.value || page))); e.target.value = String(next); go(next); }} onKeyDown={e => { if (e.key === "Enter") e.currentTarget.blur(); }}/>
               </label>
             </div>
-            <nav aria-label="Market directory pagination" className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div className="flex flex-wrap items-center justify-center gap-1 lg:order-2">
+            <nav aria-label="Market directory pagination" className="grid grid-cols-2 gap-3 lg:flex lg:items-center lg:justify-between">
+              <div className="col-span-2 flex min-w-0 items-center justify-start gap-1 overflow-x-auto sm:justify-center lg:order-2">
                 {pageList.map((n, index) => <span key={n} className="flex items-center gap-1">
                   {index > 0 && n - pageList[index - 1] > 1 && <span className="px-1 text-neutral-400" aria-hidden="true">…</span>}
-                  <button aria-label={`Page ${n}`} aria-current={n === page ? "page" : undefined} disabled={loading} onClick={() => go(n)} className={`h-11 min-w-9 rounded-lg px-2 text-xs font-semibold transition disabled:cursor-not-allowed sm:min-w-11 ${n === page ? "bg-neutral-900 text-white shadow-sm" : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"}`}>{n}</button>
+                  <button aria-label={`Page ${n}`} aria-current={n === page ? "page" : undefined} disabled={loading} onClick={() => go(n)} className={`h-11 min-w-8 rounded-lg px-1 text-xs font-semibold transition disabled:cursor-not-allowed sm:min-w-11 ${n === page ? "bg-neutral-900 text-white shadow-sm" : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"}`}>{n}</button>
                 </span>)}
               </div>
-              <button onClick={() => go(page - 1)} disabled={loading || page === 1} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-5 py-3 text-sm font-semibold text-neutral-700 transition hover:border-emerald-300 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40 lg:order-1"><span aria-hidden="true">←</span> Previous page</button>
-              <button onClick={() => go(page + 1)} disabled={loading || total === null || page >= pages} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:shadow-none lg:order-3">Next page <span aria-hidden="true">→</span></button>
+              <button onClick={() => go(page - 1)} disabled={loading || page === 1} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-neutral-200 bg-white px-3 py-3 text-xs font-semibold text-neutral-700 sm:px-5 sm:text-sm transition hover:border-emerald-300 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40 lg:order-1"><span aria-hidden="true">←</span> Previous<span className="hidden sm:inline"> page</span></button>
+              <button onClick={() => go(page + 1)} disabled={loading || total === null || page >= pages} className="flex min-h-11 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-3 py-3 text-xs font-semibold text-white sm:px-5 sm:text-sm shadow-sm transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:bg-neutral-200 disabled:text-neutral-400 disabled:shadow-none lg:order-3">Next<span className="hidden sm:inline"> page</span> <span aria-hidden="true">→</span></button>
             </nav>
           </div>}
         </div>
-        {isHome && <div className="mt-6 flex flex-col items-center gap-3 rounded-xl border border-neutral-200 bg-white p-5 text-center sm:flex-row sm:justify-between sm:text-left"><p className="text-xs leading-6 text-neutral-500">{updated ? `CoinLore snapshot · ${updated.toLocaleString()}` : "Market data is provided by CoinLore."}</p><Link to="/coins" className="inline-flex min-h-12 items-center gap-3 rounded-xl bg-emerald-800 px-5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-900">See all coins <span aria-hidden="true">→</span></Link></div>}
+        {isHome && <div className="mt-6 flex flex-col items-center gap-3 rounded-xl border border-neutral-200 bg-white p-5 text-center sm:flex-row sm:justify-between sm:text-left"><p className="text-xs leading-6 text-neutral-500">{updated ? `Updated · ${updated.toLocaleString()}` : ""}</p><Link to="/coins" className="inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-emerald-800 sm:w-auto px-5 text-sm font-semibold text-white shadow-sm hover:bg-emerald-900">See all coins <span aria-hidden="true">→</span></Link></div>}
       </section>}
       {isCourses && <CoursesPage/>}
       <Outlet/>
     </main>
     <footer id="about" className="compact-footer">
-      <div className="mx-auto flex max-w-[1440px] flex-col items-start gap-4 px-5 py-8 text-left sm:px-8 lg:px-[42px]">
-        <Link to="/" className="text-base font-bold text-neutral-900">MBK <span className="text-emerald-600">Global Market</span></Link>
-        <p className="text-xs leading-6 text-neutral-500">Data: CoinLore · Charts: TradingView<br/>For information only. Exchange coverage may vary.</p>
-        <div className="flex flex-wrap justify-start gap-x-5 gap-y-2 text-xs text-neutral-500">
-          <span>© {new Date().getFullYear()} MBK Global Market</span>
-          <span>Created by <strong className="font-semibold text-neutral-700">MBK Global Market</strong></span>
+      <div className="mx-auto max-w-[1440px] px-5 text-left sm:px-8 lg:px-[42px]">
+        <div className="grid gap-3 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-8">
+          <div className="min-w-0">
+            <Link to="/" className="inline-block font-[Manrope] text-lg font-semibold tracking-tight text-neutral-950">MBK <span className="text-emerald-700">Global Market</span></Link>
+            <p className="mt-1! text-[11px] leading-5 text-neutral-500">An official project by <span className="font-semibold text-neutral-700">MBK Global</span></p>
+          </div>
+          <address className="flex min-w-0 flex-col items-start not-italic">
+            <a href="tel:+923200276941" className="inline-flex min-h-11 items-center gap-2 text-xs font-medium tabular-nums text-neutral-800 transition hover:text-emerald-700"><span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-emerald-600"/>+92 320 0276941</a>
+            <a href="mailto:bakhtawark085@gmail.com" className="flex min-h-11 items-center gap-2 break-all text-xs text-neutral-600 transition hover:text-emerald-700"><span aria-hidden="true" className="shrink-0 text-emerald-700">↗</span>bakhtawark085@gmail.com</a>
+          </address>
         </div>
-        <a href="tel:+923200276941" className="text-xs font-semibold tabular-nums text-neutral-600 hover:text-emerald-600">Contact · 03200276941</a>
-        <a href={CONTACT} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-neutral-200 px-3 text-xs font-semibold text-emerald-600"><Icon name="chat" size={14}/> Official WhatsApp contact ↗</a>
+        <div className="flex flex-wrap items-center justify-between gap-x-6 border-t border-neutral-200 py-2"><p className="text-[10px] leading-5 text-neutral-500">© 2026 MBK Global. All rights reserved.</p><nav aria-label="Footer navigation" className="flex flex-wrap gap-x-3 text-[11px] text-neutral-500 sm:gap-x-5"><Link to="/coins" className="inline-flex min-h-11 items-center hover:text-emerald-700">Coins</Link><Link to="/live-charts" className="inline-flex min-h-11 items-center hover:text-emerald-700">Charts</Link><Link to="/courses" className="inline-flex min-h-11 items-center hover:text-emerald-700">Courses</Link><Link to="/need-a-website" className="inline-flex min-h-11 items-center gap-1 font-semibold text-emerald-700 hover:text-emerald-900">Need a website? <span aria-hidden="true">↗</span></Link></nav></div>
       </div>
     </footer>
   </div>;
@@ -602,6 +609,7 @@ const router = createBrowserRouter([{
     { path: "courses", Component: EmptyRoute },
     { path: "coins", Component: EmptyRoute },
     { path: "live-charts", Component: EmptyRoute },
+    { path: "need-a-website", Component: WebsiteEnquiryPage },
     { path: "*", Component: NotFoundPage },
   ],
 }], { basename: new URL(import.meta.env.BASE_URL, window.location.origin).pathname.replace(/\/$/, "") || "/" });
